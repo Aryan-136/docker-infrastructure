@@ -2,7 +2,8 @@
   "log-driver": "json-file",
   "log-opts": {
     "max-size": "50m",
-    "max-file": "3"
+    "max-file": "3",
+    "compress": "true"
   },
   "live-restore": true,
   "userland-proxy": false,

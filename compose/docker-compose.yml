@@ -1,28 +1,46 @@
-﻿version: '3.8'
-
 services:
   portainer:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:2.21.3
     container_name: portainer
     restart: unless-stopped
     security_opt:
       - no-new-privileges:true
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
     ports:
-      - 9443:9443
+      - "${PORTAINER_PORT:-9443}:9443"
+    networks:
+      - fleet-mgmt
+    mem_limit: 512m
+    cpus: 1.0
 
   watchtower:
-    image: containrrr/watchtower
+    image: containrrr/watchtower:1.7.1
     container_name: watchtower
     restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
     volumes:
+      - /etc/localtime:/etc/localtime:ro
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - WATCHTOWER_CLEANUP=true
-      - WATCHTOWER_SCHEDULE=0 0 4 * * *
+      - WATCHTOWER_ROLLING_RESTART=true
+      - WATCHTOWER_TIMEOUT=30s
+      - WATCHTOWER_SCHEDULE=${WATCHTOWER_SCHEDULE:-0 0 4 * * *}
+      - TZ=${TZ:-UTC}
+    networks:
+      - fleet-mgmt
+    mem_limit: 256m
+    cpus: 0.5
+
+networks:
+  fleet-mgmt:
+    name: fleet-mgmt
+    driver: bridge
 
 volumes:
   portainer_data:
+    name: portainer_data

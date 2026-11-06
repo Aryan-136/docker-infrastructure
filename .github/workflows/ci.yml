@@ -1,0 +1,37 @@
+name: Fleet Infrastructure CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Lint & Validate Infrastructure
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Validate daemon.json Syntax
+        run: |
+          jq empty configs/daemon.json
+          echo "daemon.json is valid JSON"
+
+      - name: Validate Docker Compose Configuration
+        run: |
+          docker compose -f compose/docker-compose.yml config
+
+      - name: Lint Shell Scripts
+        run: |
+          bash -n scripts/cis-docker-audit.sh
+          bash -n scripts/cleanup-fleet.sh
+          echo "All shell scripts passed syntax checks"
+
+      - name: Run Static CIS Audit Check
+        run: |
+          chmod +x scripts/*.sh
+          ./scripts/cis-docker-audit.sh || true
+
