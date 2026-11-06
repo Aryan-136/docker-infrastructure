@@ -4,7 +4,7 @@
 [![CIS Benchmark](https://img.shields.io/badge/Security-CIS%20Docker%20Benchmark%20v1.6-00C853?style=for-the-badge&logo=shield&logoColor=white)](scripts/cis-docker-audit.sh)
 [![Portainer CE](https://img.shields.io/badge/Fleet%20UI-Portainer%20CE%202.21-13BEBB?style=for-the-badge&logo=portainer&logoColor=white)](https://portainer.io)
 [![Watchtower](https://img.shields.io/badge/CI%2FCD-Watchtower%20Rolling%20Updates-F58220?style=for-the-badge&logo=docker&logoColor=white)](compose/docker-compose.yml)
-[![CI Pipeline](https://img.shields.io/badge/Validation-GitHub%20Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)](.github/workflows/ci.yml)
+[![Fleet Infrastructure CI](https://github.com/Aryan-136/docker-infrastructure/actions/workflows/ci.yml/badge.svg)](https://github.com/Aryan-136/docker-infrastructure/actions/workflows/ci.yml)
 
 A production-hardened Docker fleet deployment framework engineered for cloud nodes and enterprise hosts. Enforces Center for Internet Security (CIS) daemon security baselines, prevents container breakout vulnerabilities (`no-new-privileges`), restricts inter-container communication (`icc: false`), caps and compresses log storage, isolates management services on dedicated bridge networks, and automates rolling container maintenance via Watchtower.
 
